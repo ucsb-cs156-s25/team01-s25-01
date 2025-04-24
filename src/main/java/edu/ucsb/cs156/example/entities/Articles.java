@@ -16,7 +16,9 @@ public class Articles {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private long id;
 
+    private String title;
     private String url;
+    
     private String explanation;
     private String email;
     LocalDateTime dateAdded;
