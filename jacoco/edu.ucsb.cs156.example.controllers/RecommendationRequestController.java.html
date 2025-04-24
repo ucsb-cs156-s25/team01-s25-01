@@ -36,8 +36,8 @@ import java.time.LocalDateTime;
 @Tag(name = &quot;RecommendationRequest&quot;)
 @RequestMapping(&quot;/api/recommendationrequest&quot;)
 @RestController
-<span class="nc" id="L39">@Slf4j</span>
-<span class="nc" id="L40">public class RecommendationRequestController extends ApiController {</span>
+<span class="fc" id="L39">@Slf4j</span>
+<span class="fc" id="L40">public class RecommendationRequestController extends ApiController {</span>
     @Autowired
     RecommendationRequestRepository recommendationRequestRepository;
 
@@ -50,8 +50,8 @@ import java.time.LocalDateTime;
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @GetMapping(&quot;/all&quot;)
     public Iterable&lt;RecommendationRequest&gt; allRecommendationRequests() {
-<span class="nc" id="L53">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAll();</span>
-<span class="nc" id="L54">        return recommendationRequests;</span>
+<span class="fc" id="L53">        Iterable&lt;RecommendationRequest&gt; recommendationRequests = recommendationRequestRepository.findAll();</span>
+<span class="fc" id="L54">        return recommendationRequests;</span>
     }
 
     /**
@@ -80,20 +80,37 @@ import java.time.LocalDateTime;
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         // See: https://www.baeldung.com/spring-date-parameters
 
-<span class="nc" id="L83">        log.info(&quot;localDateTime={}&quot;, dateRequested);</span>
-<span class="nc" id="L84">        log.info(&quot;localDateTime={}&quot;, dateNeeded);</span>
+<span class="fc" id="L83">        log.info(&quot;localDateTime={}&quot;, dateRequested);</span>
+<span class="fc" id="L84">        log.info(&quot;localDateTime={}&quot;, dateNeeded);</span>
 
-<span class="nc" id="L86">        RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
-<span class="nc" id="L87">        recommendationRequest.setRequesterEmail(requesterEmail);</span>
-<span class="nc" id="L88">        recommendationRequest.setProfessorEmail(professorEmail);</span>
-<span class="nc" id="L89">        recommendationRequest.setExplanation(explanation);</span>
-<span class="nc" id="L90">        recommendationRequest.setDateRequested(dateRequested);</span>
-<span class="nc" id="L91">        recommendationRequest.setDateNeeded(dateNeeded);</span>
-<span class="nc" id="L92">        recommendationRequest.setDone(done);</span>
+<span class="fc" id="L86">        RecommendationRequest recommendationRequest = new RecommendationRequest();</span>
+<span class="fc" id="L87">        recommendationRequest.setRequesterEmail(requesterEmail);</span>
+<span class="fc" id="L88">        recommendationRequest.setProfessorEmail(professorEmail);</span>
+<span class="fc" id="L89">        recommendationRequest.setExplanation(explanation);</span>
+<span class="fc" id="L90">        recommendationRequest.setDateRequested(dateRequested);</span>
+<span class="fc" id="L91">        recommendationRequest.setDateNeeded(dateNeeded);</span>
+<span class="fc" id="L92">        recommendationRequest.setDone(done);</span>
 
-<span class="nc" id="L94">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
+<span class="fc" id="L94">        RecommendationRequest savedRecommendationRequest = recommendationRequestRepository.save(recommendationRequest);</span>
 
-<span class="nc" id="L96">        return savedRecommendationRequest;</span>
+<span class="fc" id="L96">        return savedRecommendationRequest;</span>
+    }
+
+    /**
+     * Get a single recommendation request by id
+     * 
+     * @param id the id of the recommendation request
+     * @return a RecommendationRequest
+     */
+    @Operation(summary = &quot;Get a single recommendation request&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;&quot;)
+    public RecommendationRequest getById(
+            @Parameter(name = &quot;id&quot;) @RequestParam Long id) {
+<span class="nc" id="L110">        RecommendationRequest recommendationRequest = recommendationRequestRepository.findById(id)</span>
+<span class="nc" id="L111">                .orElseThrow(() -&gt; new EntityNotFoundException(RecommendationRequest.class, id));</span>
+
+<span class="nc" id="L113">        return recommendationRequest;</span>
     }
 
 }
