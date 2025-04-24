@@ -33,6 +33,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -122,14 +123,14 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
                 .explanation("explanation")
                 .dateRequested(ldt1)
                 .dateNeeded(ldt2)
-                .done(false)
+                .done(true)
                 .build();
 
         when(recommendationRequestRepository.save(eq(recommendationRequest1))).thenReturn(recommendationRequest1);
 
         // act
         MvcResult response = mockMvc.perform(
-                post("/api/recommendationrequest/post?requesterEmail=requester&professorEmail=professor&explanation=explanation&dateRequested=2022-01-03T00:00:00&dateNeeded=2022-03-11T00:00:00&done=false")
+                post("/api/recommendationrequest/post?requesterEmail=requester&professorEmail=professor&explanation=explanation&dateRequested=2022-01-03T00:00:00&dateNeeded=2022-03-11T00:00:00&done=true")
                         .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
 
