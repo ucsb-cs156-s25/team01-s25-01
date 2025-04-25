@@ -19,11 +19,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "UCSBOrganizations")
+@Entity(name = "ucsborganization")
 public class UCSBOrganization {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
 
   private String orgCode;
   private String orgTranslationShort;

@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "UCSBOrganization"
+                    "tableName": "UCSBORGANIZATION"
                   }
                 }
               ]
@@ -24,17 +24,10 @@
                 "columns": [
                   {
                     "column": {
-                      "autoIncrement": true,
                       "constraints": {
                         "primaryKey": true,
-                        "primaryKeyName": "UCSBOrganization_PK"
+                        "primaryKeyName": "UCSBORGANIZATION_PK"
                       },
-                      "name": "ID",
-                      "type": "BIGINT"
-                    }
-                  },
-                  {
-                    "column": {
                       "name": "org_code",
                       "type": "VARCHAR(255)"
                     }
@@ -58,7 +51,7 @@
                     }
                   }
                 ],
-                "tableName": "UCSBOrganization"
+                "tableName": "UCSBORGANIZATION"
               }
             }
           ]
