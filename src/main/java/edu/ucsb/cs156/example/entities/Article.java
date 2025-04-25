@@ -1,6 +1,8 @@
 package edu.ucsb.cs156.example.entities;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -10,8 +12,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "Articles")
-public class Articles {
+@Entity(name = "Article")
+public class Article {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private long id;
@@ -21,6 +23,6 @@ public class Articles {
     
     private String explanation;
     private String email;
-    LocalDateTime dateAdded;
+    ZonedDateTime dateAdded;
 
 }
