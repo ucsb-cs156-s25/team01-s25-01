@@ -1,6 +1,7 @@
 package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.HelpRequest;
+import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.HelpRequestRepository;
 
@@ -93,6 +94,23 @@ public class HelpRequestController extends ApiController {
         HelpRequest savedHelpRequest = helprequestRepository.save(helprequest);
 
         return savedHelpRequest;
+    }
+
+    /**
+     * Get a single helprequest by id
+     * 
+     * @param id the id of the helprequest
+     * @return a HelpRequest
+     */
+    @Operation(summary= "Get a single helprequest")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public HelpRequest getById(
+            @Parameter(name="id") @RequestParam Long id) {
+        HelpRequest helprequest = helprequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
+
+        return helprequest;
     }
     
 }
