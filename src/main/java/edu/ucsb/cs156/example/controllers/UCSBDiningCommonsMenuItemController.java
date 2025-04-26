@@ -41,16 +41,12 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @Autowired
     UCSBDiningCommonsMenuItemRepository ucsbDiningCommonsMenuItemRepository;
 
-
-
-
-
     /**
      * List all UCSB Dining Common Menu Items
      * 
      * @return an iterable of UCSBDiningCommonsMenuItem
      */
-    @Operation(summary= "List all UCSB Dining Commons Menu Items")
+    @Operation(summary = "List all UCSB Dining Commons Menu Items")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<UCSBDiningCommonsMenuItem> allUCSBDiningCommonsMenuItems() {
@@ -61,35 +57,49 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     /**
      * Create a new UCSB Dining Commons Menu Item
      * 
-     * @param diningCommonsCode  dining commons code for which dining common
-     * @param name          name of menu item
-     * @param station station for where in the dining common menu item is 
+     * @param diningCommonsCode dining commons code for which dining common
+     * @param name              name of menu item
+     * @param station           station for where in the dining common menu item is
      * @return the saved UCSB Dining Common Menu Item
      */
-    @Operation(summary= "Create a new Dining Common Menu Item")
+    @Operation(summary = "Create a new Dining Common Menu Item")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBDiningCommonsMenuItem postUCSBDiningCommonsMenuItem(
-            @Parameter(name="diningCommonsCode") @RequestParam String diningCommonsCode,
-            @Parameter(name="name") @RequestParam String name,
-            @Parameter(name="station") @RequestParam String station)
+            @Parameter(name = "diningCommonsCode") @RequestParam String diningCommonsCode,
+            @Parameter(name = "name") @RequestParam String name,
+            @Parameter(name = "station") @RequestParam String station)
             throws JsonProcessingException {
 
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         // See: https://www.baeldung.com/spring-date-parameters
-
 
         UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = new UCSBDiningCommonsMenuItem();
         ucsbDiningCommonsMenuItem.setDiningCommonsCode(diningCommonsCode);
         ucsbDiningCommonsMenuItem.setName(name);
         ucsbDiningCommonsMenuItem.setStation(station);
 
-        
+        UCSBDiningCommonsMenuItem savedUCSBDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository
+                .save(ucsbDiningCommonsMenuItem);
 
-        UCSBDiningCommonsMenuItem savedUCSBDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.save(ucsbDiningCommonsMenuItem);
-        
         return savedUCSBDiningCommonsMenuItem;
     }
 
+    /**
+     * Get a single Menu Item by id
+     * 
+     * @param id the id of the date
+     * @return a UCSB Dining Commons Menu Item by ID
+     */
+    @Operation(summary = "Get a UCSB Dining Commons Menu Item")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public UCSBDiningCommonsMenuItem getById(
+            @Parameter(name = "id") @RequestParam Long id) {
+                UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        return ucsbDiningCommonsMenuItem;
+    }
 
 }
