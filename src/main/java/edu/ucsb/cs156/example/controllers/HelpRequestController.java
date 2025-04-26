@@ -2,6 +2,7 @@ package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.HelpRequest;
 import edu.ucsb.cs156.example.entities.UCSBDate;
+import edu.ucsb.cs156.example.entities.UCSBDiningCommons;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.HelpRequestRepository;
 
@@ -113,4 +114,32 @@ public class HelpRequestController extends ApiController {
         return helprequest;
     }
     
+         /**
+     * Update a single helprequest
+     * 
+     * @param id       id of the date to update
+     * @param incoming the new hleprequest
+     * @return the updated date object
+     */
+    @Operation(summary= "Update a single helprequest")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public HelpRequest updateHelpRequest(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid HelpRequest incoming) {
+
+        HelpRequest helprequest = helprequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
+
+        helprequest.setRequesterEmail(incoming.getRequesterEmail());
+        helprequest.setTeamId(incoming.getTeamId());
+        helprequest.setTableOrBreakoutRoom(incoming.getTableOrBreakoutRoom());
+        helprequest.setRequestTime(incoming.getRequestTime());
+        helprequest.setExplanation(incoming.getExplanation());
+        helprequest.setSolved(incoming.getSolved());
+
+        helprequestRepository.save(helprequest);
+
+        return helprequest;
+    }
 }
