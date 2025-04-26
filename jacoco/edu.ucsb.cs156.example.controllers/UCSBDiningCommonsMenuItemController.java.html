@@ -116,16 +116,34 @@ import java.time.LocalDateTime;
             @Parameter(name = &quot;id&quot;) @RequestParam Long id,
             @RequestBody @Valid UCSBDiningCommonsMenuItem incoming) {
 
-<span class="nc" id="L119">        UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)</span>
-<span class="nc" id="L120">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));</span>
+<span class="fc" id="L119">        UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)</span>
+<span class="fc" id="L120">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));</span>
 
-<span class="nc" id="L122">        ucsbDiningCommonsMenuItem.setDiningCommonsCode(incoming.getDiningCommonsCode());</span>
-<span class="nc" id="L123">        ucsbDiningCommonsMenuItem.setName(incoming.getName());</span>
-<span class="nc" id="L124">        ucsbDiningCommonsMenuItem.setStation(incoming.getStation());</span>
+<span class="fc" id="L122">        ucsbDiningCommonsMenuItem.setDiningCommonsCode(incoming.getDiningCommonsCode());</span>
+<span class="fc" id="L123">        ucsbDiningCommonsMenuItem.setName(incoming.getName());</span>
+<span class="fc" id="L124">        ucsbDiningCommonsMenuItem.setStation(incoming.getStation());</span>
 
-<span class="nc" id="L126">        ucsbDiningCommonsMenuItemRepository.save(ucsbDiningCommonsMenuItem);</span>
+<span class="fc" id="L126">        ucsbDiningCommonsMenuItemRepository.save(ucsbDiningCommonsMenuItem);</span>
 
-<span class="nc" id="L128">        return ucsbDiningCommonsMenuItem;</span>
+<span class="fc" id="L128">        return ucsbDiningCommonsMenuItem;</span>
+    }
+
+    /**
+     * Delete a Menu Item
+     * 
+     * @param id the id of the Menu Item to delete
+     * @return a message indicating the Menu Item was deleted
+     */
+    @Operation(summary = &quot;Delete a UCSB Menu Item&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteUCSBDiningCommonsMenuItem(
+            @Parameter(name = &quot;id&quot;) @RequestParam Long id) {
+<span class="nc" id="L142">        UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)</span>
+<span class="nc" id="L143">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));</span>
+
+<span class="nc" id="L145">        ucsbDiningCommonsMenuItemRepository.delete(ucsbDiningCommonsMenuItem);</span>
+<span class="nc" id="L146">        return genericMessage(&quot;UCSBDiningCommonsMenuItem with id %s deleted&quot;.formatted(id));</span>
     }
 
 }
