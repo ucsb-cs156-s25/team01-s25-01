@@ -1,7 +1,6 @@
 package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.Article;
-import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.ArticlesRepository;
 
@@ -26,16 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 /**
  * This is a Rest Controller for Articles
  */
 @Tag(name = "Articles")
-@RequestMapping("/api/Articles")
+@RequestMapping("/api/articles")
 @RestController
 @Slf4j
-public class ArticleController extends ApiController{
+public class ArticlesController extends ApiController{
     @Autowired
     ArticlesRepository articlesRepository;
 

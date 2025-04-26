@@ -1,12 +1,12 @@
 package edu.ucsb.cs156.example.controllers;
 
-import edu.ucsb.cs156.example.repositories.UserRepository;
 import edu.ucsb.cs156.example.testconfig.TestConfig;
 import edu.ucsb.cs156.example.ControllerTestCase;
 import edu.ucsb.cs156.example.entities.Article;
 import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.repositories.ArticlesRepository;
 import edu.ucsb.cs156.example.repositories.UCSBDateRepository;
+import edu.ucsb.cs156.example.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
@@ -39,11 +38,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(controllers = ArticleController.class)
+@WebMvcTest(controllers = ArticlesController.class)
 @Import(TestConfig.class)
-public class ArticleControllerTests extends ControllerTestCase{
-    @MockitoBean
+public class ArticlesControllerTests extends ControllerTestCase{
+    @MockBean
     ArticlesRepository articlesRepository;
+    @MockBean
+        UserRepository userRepository;
 
     @Test
     public void logged_out_users_cannot_get_all() throws Exception {
@@ -72,7 +73,7 @@ public class ArticleControllerTests extends ControllerTestCase{
 
     @WithMockUser(roles = { "USER" })
     @Test
-    public void logged_in_user_can_get_all_ucsbdates() throws Exception {
+    public void logged_in_user_can_get_all_articles() throws Exception {
 
             // arrange
             ZonedDateTime zdt1 = ZonedDateTime.parse("2025-04-25T00:30:19.455Z");
@@ -105,14 +106,14 @@ public class ArticleControllerTests extends ControllerTestCase{
 
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
-    public void an_admin_user_can_post_a_new_ucsbdate() throws Exception {
+    public void an_admin_user_can_post_a_new_article() throws Exception {
             // arrange
 
             ZonedDateTime zdt1 = ZonedDateTime.parse("2025-04-25T00:30:19.455Z");
             Article article1 = Article.builder()
                                 .title("test_title")
                                 .url("https://github.com/ucsb-cs156-s25/team01-s25-01")
-                                .explanation("test repo")
+                                .explanation("testrepo")
                                 .email("ranchen@ucsb.edu")
                                 .dateAdded(zdt1)
                                 .build();
@@ -122,7 +123,7 @@ public class ArticleControllerTests extends ControllerTestCase{
 
             // act
             MvcResult response = mockMvc.perform(
-                            post("/api/articles/post?name=firstDayOfClasses&quarterYYYYQ=20222&localDateTime=2022-01-03T00:00:00")
+                            post("/api/articles/post?title=test_title&url=https://github.com/ucsb-cs156-s25/team01-s25-01&explanation=testrepo&email=ranchen@ucsb.edu&dateAdded=2025-04-25T00:30:19.455Z")
                                             .with(csrf()))
                             .andExpect(status().isOk()).andReturn();
 

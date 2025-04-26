@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "ARTICLE"
+                    "tableName": "ARTICLES"
                   }
                 }
               ]
@@ -65,7 +65,7 @@
                   }
                   
                 ],
-                "tableName": "ARTICLE"
+                "tableName": "ARTICLES"
               }
             }
           ]
