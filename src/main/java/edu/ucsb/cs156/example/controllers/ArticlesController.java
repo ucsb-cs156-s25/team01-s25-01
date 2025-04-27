@@ -90,23 +90,22 @@ public class ArticlesController extends ApiController {
         return savedUcsbDate;
     }
 
-        /**
+    /**
      * Get an article by id
      * 
      * @param id the id of the article
      * @return an article
      */
-    @Operation(summary= "Get a single article")
+    @Operation(summary = "Get a single article")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public Article getById(
-            @Parameter(name="id") @RequestParam Long id) {
+            @Parameter(name = "id") @RequestParam Long id) {
         Article article = articlesRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Article.class, id));
 
         return article;
     }
-
 
     /**
      * Update a single article
@@ -115,11 +114,11 @@ public class ArticlesController extends ApiController {
      * @param incoming the new article
      * @return the updated article object
      */
-    @Operation(summary= "Update a single article")
+    @Operation(summary = "Update a single article")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
     public Article updateArticle(
-            @Parameter(name="id") @RequestParam Long id,
+            @Parameter(name = "id") @RequestParam Long id,
             @RequestBody @Valid Article incoming) {
 
         Article article = articlesRepository.findById(id)
@@ -130,10 +129,28 @@ public class ArticlesController extends ApiController {
         article.setExplanation(incoming.getExplanation());
         article.setEmail(incoming.getEmail());
         article.setDateAdded(incoming.getDateAdded());
-        
+
         articlesRepository.save(article);
 
         return article;
+    }
+
+    /**
+     * Delete an article
+     * 
+     * @param id the id of the article to delete
+     * @return a message indicating the article was deleted
+     */
+    @Operation(summary = "Delete an article")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deletaArticle(
+            @Parameter(name = "id") @RequestParam Long id) {
+        Article article = articlesRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Article.class, id));
+
+        articlesRepository.delete(article);
+        return genericMessage("Article with id %s deleted".formatted(id));
     }
 
 }
