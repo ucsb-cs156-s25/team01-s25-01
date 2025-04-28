@@ -138,5 +138,6 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
             assertEquals(expectedJson, responseString);
     }
 
+
 }
 
