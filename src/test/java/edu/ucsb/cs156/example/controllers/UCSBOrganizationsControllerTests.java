@@ -61,12 +61,6 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
     }
 
     @Test
-    public void logged_out_users_cannot_get_by_id() throws Exception {
-            mockMvc.perform(get("/api/ucsborganizations?orgcode=string"))
-                            .andExpect(status().is(403)); // logged out users can't get by id
-    }
-
-    @Test
     public void logged_out_users_cannot_post() throws Exception {
             mockMvc.perform(post("/api/ucsborganizations/post"))
                             .andExpect(status().is(403));
@@ -138,6 +132,52 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
             assertEquals(expectedJson, responseString);
     }
 
+    @Test
+    public void logged_out_users_cannot_get_by_id() throws Exception {
+            mockMvc.perform(get("/api/ucsborganizations?id=7"))
+                            .andExpect(status().is(403)); // logged out users can't get by id
+    }
 
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
+
+            // arrange
+            when(ucsbOrganizationsRepository.findById(eq(7L))).thenReturn(Optional.empty());
+
+            // act
+            MvcResult response = mockMvc.perform(get("/api/UCSBDiningCommonsMenuItem?id=7"))
+                            .andExpect(status().isNotFound()).andReturn();
+
+            // assert
+
+            verify(ucsbOrganizationsRepository, times(1)).findById(eq(7L));
+            Map<String, Object> json = responseToJson(response);
+            assertEquals("EntityNotFoundException", json.get("type"));
+            assertEquals("UCSBDiningCommonsMenuItem with id 7 not found", json.get("message"));
+    }
+
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void test_that_logged_in_user_can_get_by_id_when_the_id_does_exist() throws Exception {
+
+            // arrange
+            UCSBOrganizationBuilder organization1 = UCSBOrganization.builder()
+            .orgCode("String")
+            .orgTranslationShort("str")
+            .orgTranslation("string")
+            .inactive(false);
+
+            // act
+            MvcResult response = mockMvc.perform(get("/api/UCSBDiningCommonsMenuItem?id=7"))
+                            .andExpect(status().isOk()).andReturn();
+
+            // assert
+
+            verify(ucsbOrganizationsRepository, times(1)).findById(eq(7L));
+            String expectedJson = mapper.writeValueAsString(organization1);
+            String responseString = response.getResponse().getContentAsString();
+            assertEquals(expectedJson, responseString);
+    }
 }
 
