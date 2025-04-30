@@ -11,6 +11,7 @@ import edu.ucsb.cs156.example.repositories.UCSBOrganizationRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,11 +61,6 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
                             .andExpect(status().is(200)); // logged
     }
 
-    @Test
-    public void logged_out_users_cannot_get_by_id() throws Exception {
-            mockMvc.perform(get("/api/ucsborganizations?orgcode=string"))
-                            .andExpect(status().is(403)); // logged out users can't get by id
-    }
 
     @Test
     public void logged_out_users_cannot_post() throws Exception {
@@ -85,14 +81,13 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
 
             // arrange
 
-            UCSBOrganizationBuilder organization1 = UCSBOrganization.builder()
+            UCSBOrganization organization1 = UCSBOrganization.builder()
                             .orgCode("String")
                             .orgTranslationShort("str")
                             .orgTranslation("string")
-                            .inactive(false);
+                            .inactive(false).build();
 
-            ArrayList<UCSBOrganization> expectedOrganization = new ArrayList<>();
-            expectedOrganization.add((UCSBOrganization) Arrays.asList(organization1));
+            List<UCSBOrganization> expectedOrganization = Arrays.asList(organization1);
 
             when(ucsbOrganizationsRepository.findAll()).thenReturn(expectedOrganization);
 
@@ -114,26 +109,24 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
             // arrange
 
 
-            UCSBOrganizationBuilder organization1 = UCSBOrganization.builder()
-                            .orgCode("String")
-                            .orgTranslationShort("str")
-                            .orgTranslation("string")
-                            .inactive(false);
+            UCSBOrganization organization1 = UCSBOrganization.builder()
+            .orgCode("String")
+            .orgTranslationShort("str")
+            .orgTranslation("string")
+            .inactive(true).build();
 
-            ArrayList<UCSBOrganization> expectedOrganization = new ArrayList<>();
-            expectedOrganization.add((UCSBOrganization) Arrays.asList(organization1));
-                
-            when(ucsbOrganizationsRepository.findAll()).thenReturn(expectedOrganization);
+
+            when(ucsbOrganizationsRepository.save(eq(organization1))).thenReturn(organization1);
 
             // act
             MvcResult response = mockMvc.perform(
-                            post("/api/ucsborganizations/post?orgCode=string&orgTranslationShort=str&orgTranslation=string&inactive=false")
+                            post("/api/ucsborganizations/post?orgCode=String&orgTranslationShort=str&orgTranslation=string&inactive=true")
                                             .with(csrf()))
                             .andExpect(status().isOk()).andReturn();
 
             // assert
-            verify(ucsbOrganizationsRepository, times(1)).saveAll(expectedOrganization);
-            String expectedJson = mapper.writeValueAsString(expectedOrganization);
+            verify(ucsbOrganizationsRepository, times(1)).save(organization1);
+            String expectedJson = mapper.writeValueAsString(organization1);
             String responseString = response.getResponse().getContentAsString();
             assertEquals(expectedJson, responseString);
     }

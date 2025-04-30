@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UCSBOrganizationRepository extends CrudRepository<UCSBOrganization, Long> {
 
-    Optional<UCSBOrganization> findById(String orgCode);
+    Optional<UCSBOrganization> findByOrgCode(String orgCode);
 }
 
