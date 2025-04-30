@@ -70,7 +70,7 @@ import java.time.ZonedDateTime;
             @Parameter(name = &quot;url&quot;) @RequestParam String url,
             @Parameter(name = &quot;explanation&quot;) @RequestParam String explanation,
             @Parameter(name = &quot;email&quot;) @RequestParam String email,
-            @Parameter(name = &quot;dateAdded&quot;, description = &quot;date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)&quot;) @RequestParam(&quot;dateAdded&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime dateAdded)
+            @Parameter(name = &quot;dateAdded&quot;, description = &quot;date (in iso format, e.g. YYYY-mm-ddTHH:MM:SSZ)&quot;) @RequestParam(&quot;dateAdded&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime dateAdded)
             throws JsonProcessingException {
 
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
