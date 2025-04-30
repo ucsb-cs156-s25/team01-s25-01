@@ -2,6 +2,7 @@ package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.entities.UCSBDiningCommons;
+import edu.ucsb.cs156.example.entities.UCSBDiningCommonsMenuItem;
 import edu.ucsb.cs156.example.entities.UCSBOrganization;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.UCSBDateRepository;
@@ -86,4 +87,43 @@ public class UCSBOrganizationsController extends ApiController{
         return savedOrganizations;
     }
     
+
+    /**
+     * Update a single UCSB Organization
+     * 
+     * @param id       id of the Organization to update
+     * @param incoming the new Organization Item
+     * @return the updated Organization object
+     */
+    @Operation(summary = "Update a Organization")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBOrganization updateUCSBOrganization(
+            @Parameter(name = "id") @RequestParam Long id,
+            @RequestBody @Valid UCSBOrganization incoming) {
+
+                UCSBOrganization ucsbOrganization = ucsborganizationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, id));
+
+        ucsbOrganization.setOrgCode(incoming.getOrgCode());
+        ucsbOrganization.setOrgTranslationShort(incoming.getOrgTranslationShort());
+        ucsbOrganization.setOrgTranslation(incoming.getOrgTranslation());
+
+        ucsborganizationRepository.save(ucsbOrganization);
+
+        return ucsbOrganization;
+    }
+
+    @Operation(summary = "Get a single UCSBOrganization by orgCode")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public UCSBOrganization getById(
+        @Parameter(name="orgCode") @RequestParam String orgCode) {
+       
+        UCSBOrganization organization = ucsborganizationRepository.findByOrgCode(orgCode)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, orgCode));
+   
+        return organization;
+    }
+ 
 }
