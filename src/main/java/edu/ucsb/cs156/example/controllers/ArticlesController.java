@@ -42,7 +42,7 @@ public class ArticlesController extends ApiController {
     /**
      * List all Articles
      * 
-     * @return an iterable of UCSBDate
+     * @return an iterable of Article
      */
     @Operation(summary = "List all Articles")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -85,9 +85,9 @@ public class ArticlesController extends ApiController {
         article.setEmail(email);
         article.setDateAdded(dateAdded);
 
-        Article savedUcsbDate = articlesRepository.save(article);
+        Article savedarticle = articlesRepository.save(article);
 
-        return savedUcsbDate;
+        return savedarticle;
     }
 
     /**
