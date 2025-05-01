@@ -103,7 +103,7 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
             assertEquals(expectedJson, responseString);
     }
 
-    @WithMockUser(roles = { "ADMIN", "USER" })
+    @WithMockUser(roles = { "ADMIN" })
     @Test
     public void an_admin_user_can_post_a_new_organiations() throws Exception {
             // arrange
