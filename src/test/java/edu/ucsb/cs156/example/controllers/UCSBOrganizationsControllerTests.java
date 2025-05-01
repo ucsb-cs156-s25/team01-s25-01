@@ -224,9 +224,9 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
            .build();
 
            UCSBOrganization editedorganization1 = UCSBOrganization.builder()
-           .orgCode("String")
-           .orgTranslationShort("str")
-           .orgTranslation("string")
+           .orgCode("Integer")
+           .orgTranslationShort("int")
+           .orgTranslation("integer")
            .inactive(true)
            .build();
       
