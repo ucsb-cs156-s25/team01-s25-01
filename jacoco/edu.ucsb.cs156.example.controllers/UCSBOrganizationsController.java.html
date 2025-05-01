@@ -110,5 +110,52 @@ import java.time.LocalDateTime;
   
 <span class="fc" id="L111">       return organization;</span>
    }
+
+   /**
+    * Update a single UCSB Organization
+    *
+    * @param orgCode       orgCode of the Organization to update
+    * @param incoming the new Organization Item
+    * @return the updated Organization object
+    */
+    @Operation(summary = &quot;Update a Organization&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @PutMapping(&quot;&quot;)
+    public UCSBOrganization updateUCSBOrganization(
+            @Parameter(name = &quot;orgCode&quot;) @RequestParam String orgCode,
+            @RequestBody @Valid UCSBOrganization incoming) {
+ 
+ 
+<span class="fc" id="L129">                UCSBOrganization ucsbOrganization = ucsborganizationRepository.findByOrgCode(orgCode)</span>
+<span class="fc" id="L130">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBOrganization.class, orgCode));</span>
+ 
+ 
+<span class="fc" id="L133">        ucsbOrganization.setOrgCode(incoming.getOrgCode());</span>
+<span class="fc" id="L134">        ucsbOrganization.setOrgTranslationShort(incoming.getOrgTranslationShort());</span>
+<span class="fc" id="L135">        ucsbOrganization.setOrgTranslation(incoming.getOrgTranslation());</span>
+ 
+ 
+<span class="fc" id="L138">        ucsborganizationRepository.save(ucsbOrganization);</span>
+ 
+ 
+<span class="fc" id="L141">        return ucsbOrganization;</span>
+    }
+    
+    /**
+     * Delete a ucsborganizations. Accessible only to users with the role &quot;ROLE_ADMIN&quot;.
+     * @param orgCode orgCode of the organizations
+     * @return a message indiciating the organizations was deleted
+     */
+    @Operation(summary= &quot;Delete a UCSBOrganizations&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteCommons(
+            @Parameter(name=&quot;orgCode&quot;) @RequestParam String orgCode) {
+<span class="nc" id="L154">        UCSBOrganization organizations = ucsborganizationRepository.findByOrgCode(orgCode)</span>
+<span class="nc" id="L155">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBOrganization.class, orgCode));</span>
+
+<span class="nc" id="L157">                ucsborganizationRepository.delete(organizations);</span>
+<span class="nc" id="L158">        return genericMessage(&quot;UCSBOrganization with id %s deleted&quot;.formatted(orgCode));</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
