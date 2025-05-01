@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s25/team01-s25-01
 owner: ucsb-cs156-s25
 repo_name: team01-s25-01
-pull_requests: [{"author":{"id":"U_kgDOCeRySA","is_bot":false,"login":"llexuan","name":""},"headRefName":"lexuan-ucsborganizaiton-put","number":70,"title":"updated Put method and test","url":"https://github.com/ucsb-cs156-s25/team01-s25-01/pull/70"}]
+pull_requests: [{"author":{"id":"U_kgDOCeRySA","is_bot":false,"login":"llexuan","name":""},"headRefName":"lexuan-delete-for-ucsborganization","number":71,"title":"Lexuan delete for ucsborganization","url":"https://github.com/ucsb-cs156-s25/team01-s25-01/pull/71"},{"author":{"id":"U_kgDOCeRySA","is_bot":false,"login":"llexuan","name":""},"headRefName":"lexuan-ucsborganizaiton-put","number":70,"title":"updated Put method and test","url":"https://github.com/ucsb-cs156-s25/team01-s25-01/pull/70"}]
