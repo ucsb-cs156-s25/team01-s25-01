@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
 @Entity(name = "ucsborganization")
 public class UCSBOrganization {
   @Id
-
   private String orgCode;
   private String orgTranslationShort;
   private String orgTranslation;
