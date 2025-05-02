@@ -110,4 +110,51 @@ public class UCSBOrganizationsController extends ApiController{
   
        return organization;
    }
+
+   /**
+    * Update a single UCSB Organization
+    *
+    * @param orgCode       orgCode of the Organization to update
+    * @param incoming the new Organization Item
+    * @return the updated Organization object
+    */
+    @Operation(summary = "Update a Organization")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBOrganization updateUCSBOrganization(
+            @Parameter(name = "orgCode") @RequestParam String orgCode,
+            @RequestBody @Valid UCSBOrganization incoming) {
+ 
+ 
+                UCSBOrganization ucsbOrganization = ucsborganizationRepository.findByOrgCode(orgCode)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, orgCode));
+ 
+ 
+        ucsbOrganization.setOrgTranslationShort(incoming.getOrgTranslationShort());
+        ucsbOrganization.setOrgTranslation(incoming.getOrgTranslation());
+        ucsbOrganization.setInactive(incoming.getInactive());
+ 
+ 
+        ucsborganizationRepository.save(ucsbOrganization);
+ 
+ 
+        return ucsbOrganization;
+    }
+    
+    /**
+     * Delete a ucsborganizations. Accessible only to users with the role "ROLE_ADMIN".
+     * @param orgCode orgCode of the organizations
+     * @return a message indiciating the organizations was deleted
+     */
+    @Operation(summary= "Delete a UCSBOrganizations")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteCommons(
+            @Parameter(name="orgCode") @RequestParam String orgCode) {
+        UCSBOrganization organizations = ucsborganizationRepository.findByOrgCode(orgCode)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBOrganization.class, orgCode));
+
+                ucsborganizationRepository.delete(organizations);
+        return genericMessage("UCSBOrganization with id %s deleted".formatted(orgCode));
+    }
 }
