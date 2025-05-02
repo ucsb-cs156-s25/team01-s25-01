@@ -130,9 +130,9 @@ import java.time.LocalDateTime;
 <span class="fc" id="L130">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBOrganization.class, orgCode));</span>
  
  
-<span class="fc" id="L133">        ucsbOrganization.setOrgCode(incoming.getOrgCode());</span>
-<span class="fc" id="L134">        ucsbOrganization.setOrgTranslationShort(incoming.getOrgTranslationShort());</span>
-<span class="fc" id="L135">        ucsbOrganization.setOrgTranslation(incoming.getOrgTranslation());</span>
+<span class="fc" id="L133">        ucsbOrganization.setOrgTranslationShort(incoming.getOrgTranslationShort());</span>
+<span class="fc" id="L134">        ucsbOrganization.setOrgTranslation(incoming.getOrgTranslation());</span>
+<span class="fc" id="L135">        ucsbOrganization.setInactive(incoming.getInactive());</span>
  
  
 <span class="fc" id="L138">        ucsborganizationRepository.save(ucsbOrganization);</span>
