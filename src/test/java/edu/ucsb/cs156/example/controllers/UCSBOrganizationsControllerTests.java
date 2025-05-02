@@ -220,11 +220,11 @@ public class UCSBOrganizationsControllerTests extends ControllerTestCase {
            .orgCode("String")
            .orgTranslationShort("str")
            .orgTranslation("string")
-           .inactive(true)
+           .inactive(false)
            .build();
 
            UCSBOrganization editedorganization1 = UCSBOrganization.builder()
-           .orgCode("Integer")
+           .orgCode("String")
            .orgTranslationShort("int")
            .orgTranslation("integer")
            .inactive(true)
